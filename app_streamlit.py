@@ -56,14 +56,19 @@ def validate_input(text: str, max_length: int = 100) -> bool:
 
 # ================= FUNGSI DATABASE =================
 def get_connection():
-    """Membuat koneksi database dengan parameter keamanan"""
-    conn = sqlite3.connect("_private/penduduk.db", check_same_thread=False)
-    
-    # Aktifkan foreign keys dan mode aman
+    # Pastikan folder _private ada
+    os.makedirs("_private", exist_ok=True)
+
+    db_path = os.path.join("_private", "penduduk.db")
+
+    conn = sqlite3.connect(db_path, check_same_thread=False)
+
+    # Mode aman
     conn.execute("PRAGMA foreign_keys = ON")
     conn.execute("PRAGMA secure_delete = ON")
-    
+
     return conn
+
 
 def create_table():
     """Membuat tabel penduduk dengan constraint"""
@@ -1200,4 +1205,5 @@ with st.sidebar.expander("⚠️ Tips Keamanan"):
     5. **Validasi data** sebelum menyimpan
     6. **Backup database** secara teratur
     """) 
+
     
